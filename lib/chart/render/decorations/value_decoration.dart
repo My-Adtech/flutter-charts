@@ -14,7 +14,7 @@ class ValueDecoration extends DecorationPainter {
     this.alignment = Alignment.topCenter,
     this.valueArrayIndex = 0,
     this.valueGenerator = defaultValueForItem,
-   required this.prefix
+    this.prefix
   });
 
   /// Style for values to use
@@ -25,7 +25,7 @@ class ValueDecoration extends DecorationPainter {
 
   final ValueFromItem valueGenerator;
   
-  final String prefix;
+  final String? prefix;
 
   /// Index of list in items, this is used if there are multiple lists in the chart
   ///
@@ -67,7 +67,7 @@ class ValueDecoration extends DecorationPainter {
     final _itemMaxValue = valueGenerator(item);
 
     final _maxValuePainter = ValueDecoration.makeTextPainter(
-      '${_itemMaxValue.toStringAsFixed(2)} prefix', 
+      '${_itemMaxValue.toStringAsFixed(2)} ${prefix??''}', 
       width,
       textStyle,
     );
