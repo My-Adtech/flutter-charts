@@ -70,14 +70,14 @@ class ValueDecoration extends DecorationPainter {
 
     final _maxValuePainter = ValueDecoration.makeTextPainter(
       '${_itemMaxValue.toStringAsFixed(2)} ${prefix??''}', 
-      width,
+      36,
       textStyle,
     );
 
     _maxValuePainter.paint(
       canvas,
       Offset(
-        width * alignment.x,
+        60 * alignment.x,
         size.height -
             _itemMaxValue * verticalMultiplier +
             minValue * verticalMultiplier -
@@ -152,3 +152,4 @@ class ValueDecoration extends DecorationPainter {
     return _painter;
   }
 }
+
