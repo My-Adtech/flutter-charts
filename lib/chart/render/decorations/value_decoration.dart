@@ -17,6 +17,7 @@ class ValueDecoration extends DecorationPainter {
     this.valueGenerator = defaultValueForItem,
     this.hideZeroValues = false,
     this.labelGenerator,
+    this.prefix
   });
 
   /// Style for values to use
@@ -26,6 +27,8 @@ class ValueDecoration extends DecorationPainter {
   final Alignment alignment;
 
   final ValueFromItem valueGenerator;
+  
+  final String? prefix;
 
   /// Generate a custom label that is used.
   ///
@@ -73,15 +76,15 @@ class ValueDecoration extends DecorationPainter {
     final _itemMaxValue = valueGenerator(item);
 
     final _maxValuePainter = ValueDecoration.makeTextPainter(
-      labelGenerator?.call(item) ?? '${_itemMaxValue.toInt()}',
-      width,
+      '${_itemMaxValue.toStringAsFixed(2)} ${prefix??''}', 
+      36,
       textStyle,
     );
 
     _maxValuePainter.paint(
       canvas,
       Offset(
-        width * alignment.x,
+        60 * alignment.x,
         size.height -
             _itemMaxValue * verticalMultiplier +
             minValue * verticalMultiplier -
@@ -107,7 +110,7 @@ class ValueDecoration extends DecorationPainter {
   @override
   void draw(Canvas canvas, Size size, ChartState state) {
     final _maxValue = state.data.maxValue - state.data.minValue;
-    final _verticalMultiplier = size.height / max(1, _maxValue);
+    final _verticalMultiplier = _maxValue == 0 ? size.height :  size.height /  _maxValue;
 
     final _listSize = state.data.listSize;
     final _itemWidth = size.width / _listSize;
@@ -156,3 +159,4 @@ class ValueDecoration extends DecorationPainter {
     return _painter;
   }
 }
+
