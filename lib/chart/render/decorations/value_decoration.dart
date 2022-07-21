@@ -1,6 +1,7 @@
 part of charts_painter;
 
 typedef ValueFromItem = double Function(ChartItem item);
+typedef LabelFromItem = String Function(ChartItem item);
 
 double defaultValueForItem(ChartItem item) => item.max ?? 0.0;
 
@@ -15,6 +16,7 @@ class ValueDecoration extends DecorationPainter {
     this.valueArrayIndex = 0,
     this.valueGenerator = defaultValueForItem,
     this.hideZeroValues = false,
+    this.labelGenerator,
     this.prefix
   });
 
@@ -27,6 +29,11 @@ class ValueDecoration extends DecorationPainter {
   final ValueFromItem valueGenerator;
   
   final String? prefix;
+
+  /// Generate a custom label that is used.
+  ///
+  /// By default it will display the output from [valueGenerator] parsed to an int
+  final LabelFromItem? labelGenerator;
 
   /// Index of list in items, this is used if there are multiple lists in the chart
   ///

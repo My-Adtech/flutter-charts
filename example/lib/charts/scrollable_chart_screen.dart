@@ -73,7 +73,6 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
       ChartData.fromList(
         _values.map((e) => BarValue<void>(e)).toList(),
         axisMax: 20,
-        axisMin: -10,
       ),
       itemOptions: BarItemOptions(
         padding: EdgeInsets.symmetric(horizontal: _isScrollable ? 12.0 : 2.0),
@@ -148,17 +147,30 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
               .withOpacity(!_showBars ? 1.0 : 0.0),
           smoothPoints: _smoothPoints,
         ),
+        BorderDecoration(
+          endWithChart: true,
+          color: Theme.of(context).colorScheme.primaryVariant,
+        ),
         SelectedItemDecoration(
           _selected,
           animate: true,
           selectedColor: Theme.of(context).colorScheme.secondary,
+          child: Padding(
+            padding: const EdgeInsets.only(bottom: 40.0),
+            child: Container(
+              padding: const EdgeInsets.all(8.0),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(),
+                shape: BoxShape.circle,
+              ),
+              child: Text(
+                  '${_selected != null ? _values[_selected].toStringAsPrecision(2) : '...'}'),
+            ),
+          ),
           backgroundColor: Theme.of(context)
               .scaffoldBackgroundColor
               .withOpacity(_isScrollable ? 0.5 : 0.8),
-        ),
-        BorderDecoration(
-          endWithChart: true,
-          color: Theme.of(context).colorScheme.primaryVariant,
         ),
       ],
     );
@@ -182,7 +194,8 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                         : NeverScrollableScrollPhysics(),
                     controller: _controller,
                     scrollDirection: Axis.horizontal,
-                    child: Chart(
+                    child: AnimatedChart(
+                      duration: Duration(milliseconds: 450),
                       width: MediaQuery.of(context).size.width - 24.0,
                       height: MediaQuery.of(context).size.height * 0.4,
                       state: _chartState,
@@ -213,13 +226,14 @@ class _ScrollableChartScreenState extends State<ScrollableChartScreen> {
                               lineWidth: 1.0,
                               axisStep: 1,
                               showValues: true,
+                              endWithChart: false,
                               legendFontStyle:
                                   Theme.of(context).textTheme.caption,
                               valuesAlign: TextAlign.center,
                               lineColor: Theme.of(context)
                                   .colorScheme
                                   .primaryVariant
-                                  .withOpacity(0.2),
+                                  .withOpacity(0.8),
                             )
                           ]
                         : [],
